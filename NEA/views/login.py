@@ -1,11 +1,15 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, flash, redirect
 from NEA.forms import LoginForm
 
 
 login = Blueprint('login', __name__)
 
 
-@login.route('/')
+@login.route('/', methods=['GET', 'POST'])
 def loginform():
     form = LoginForm()
-    return render_template('/login/login.html', title='Sign In', form=form)
+    if form.validate_on_submit():
+        flash('Login requested for user {}, remember _me={}'.format(
+            form.username.data, form.remember_me.data))
+        return redirect('/')  # temporary
+    return render_template('/login/login.html', title='Log In', form=form)
