@@ -10,7 +10,7 @@
     <body>
         <div>
             NEA:
-            <a href="/">Login</a>
+            <a href="{{ url_for('login.loginform') }}">Login</a>
         </div>
         <hr>
         {% with messages = get_flashed_messages() %}
