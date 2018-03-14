@@ -1,1 +1,6 @@
-DEBUG = False
+import os
+
+
+class Config(object):
+    DEBUG = False
+
