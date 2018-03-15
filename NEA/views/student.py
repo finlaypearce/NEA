@@ -18,4 +18,4 @@ def student_dashboard():
             'body': '1.5 hours practice!'
         }
     ]
-    return render_template('/student/s_dashboard.html', title='Student Dashboard', practice=practice)
+    return render_template('student/s_dashboard.html', title='Student Dashboard', practice=practice)

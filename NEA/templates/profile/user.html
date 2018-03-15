@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <table>
+        <tr valign="top">
+            <td><img src="{{ user.avatar(128) }}"></td>
+            <td>
+                <h1>User: {{ user.username }}</h1>
+                {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+                {% if user.month_goal %}<p><b>This month's goal:</b> {{ user.month_goal }}</p>{% endif %}
+                {% if user.year_goal %}<p><b>This year's goal:</b> {{ user.year_goal }}</p>{% endif %}
+                {% if user == current_user %}
+                <p><a href="{{ url_for('profile.edit_profile') }}">Edit your profile</a></p>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+    <h1>User: {{ user.username }}</h1>
+    <hr>
+    {% for practice in practice %}
+    <table>
+        <tr valign="top">
+            <td><img src="{{ practice.author.avatar(36) }}"></td>
+            <td>{{ practice.author.username }} did: <br>{{ practice.body }}</td>
+        </tr>
+    </table>
+    {% endfor %}
+{% endblock %}

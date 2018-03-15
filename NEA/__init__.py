@@ -16,6 +16,7 @@ login_manager.login_view = 'login.loginform'
 
 from .views.login import login
 from .views.student import student
+from .views.profile import profile
 from NEA import models
 from .models import User
 
@@ -27,3 +28,4 @@ def load_user(userid):
 
 app.register_blueprint(login)
 app.register_blueprint(student, url_prefix='/student')
+app.register_blueprint(profile, url_prefix='/user')

@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
-from NEA.forms import LoginForm, StudentRegisForm
+from ..forms import LoginForm, StudentRegisForm
 from flask_login import current_user, login_user, logout_user, login_required
-from NEA.models import User
+from ..models import User
 from NEA import db
 
 
@@ -23,7 +23,7 @@ def loginform():
             return redirect(url_for('login.loginform'))
         login_user(user, remember=form.remember_me.data)
         return redirect(url_for('student.student_dashboard'))
-    return render_template('/login/login.html', title='Log In', form=form)
+    return render_template('login/login.html', title='Log In', form=form)
 
 
 @login.route('/')
@@ -45,4 +45,4 @@ def studentregister():
 
         flash('Congratulations, you are now a registered student!')
         return redirect(url_for('login.loginform'))
-    return render_template('/login/studentregister.html', title='Student Register', form=form)
+    return render_template('login/studentregister.html', title='Student Register', form=form)

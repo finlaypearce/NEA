@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Edit Profile</h1>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.username.label }}<br>
+            {{ form.username(size=32) }}<br>
+            {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.about_me.label }}<br>
+            {{ form.about_me(cols=50, rows=4) }}<br>
+            {% for error in form.about_me.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.month_goal.label }}<br>
+            {{ form.month_goal(cols=50, rows=4) }}<br>
+            {% for error in form.month_goal.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.year_goal.label }}<br>
+            {{ form.year_goal(cols=50, rows=4) }}<br>
+            {% for error in form.year_goal.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}

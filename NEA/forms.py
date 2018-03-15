@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
 from NEA.models import User
 
 
@@ -34,3 +34,11 @@ class StudentRegisForm(FlaskForm):
 class ResetPasswordRequestForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Request Password Reset')
+
+
+class EditProfileForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    about_me = TextAreaField('About me', validators=[Length(min=0, max=140)])
+    month_goal = TextAreaField("This month's goal", validators=[Length(min=0, max=140)])
+    year_goal = TextAreaField("This year's goal", validators=[Length(min=0, max=140)])
+    submit = SubmitField('Submit')
