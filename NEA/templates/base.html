@@ -10,7 +10,11 @@
     <body>
         <div>
             NEA:
+            {% if current_user.is_anonymous %}
             <a href="{{ url_for('login.loginform') }}">Login</a>
+            {% else %}
+            <a href="{{ url_for('login.logout') }}">Logout</a>
+            {% endif %}
         </div>
         <hr>
         {% with messages = get_flashed_messages() %}

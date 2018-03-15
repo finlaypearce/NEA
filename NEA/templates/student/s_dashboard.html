@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Hi, {{ current_user.username }}!</h1>
+    {% for practice in practice %}
+    <div><p>{{ practice.author.username }} did: <b>{{ practice.body }}</b></p></div>
+    {% endfor %}
+{% endblock %}
