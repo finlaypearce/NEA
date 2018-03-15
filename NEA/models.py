@@ -1,7 +1,6 @@
-from NEA import db
+from NEA import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from NEA import login_manager
 
 
 class User(UserMixin, db.Model):
@@ -9,7 +8,6 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    email_confirmed = db.Column(db.Boolean(), default=False)
     access = db.Column(db.Integer())
 
     def __repr__(self):
@@ -22,6 +20,6 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
 
-@login_manager.user_loader
-def load_user(id):
-    return User.query.get(int(id))
+#@login_manager.user_loader
+#def load_user(id):
+  #  return User.query.get(int(id))

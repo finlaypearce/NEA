@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
-from NEA.forms import LoginForm
-from flask_login import current_user, login_user, logout_user
+from NEA.forms import LoginForm, StudentRegisForm
+from flask_login import current_user, login_user, logout_user, login_required
 from NEA.models import User
+from NEA import db
 
 
 login = Blueprint('login', __name__)
@@ -26,6 +27,22 @@ def loginform():
 
 
 @login.route('/')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('login.loginform'))
+
+
+@login.route('/studentregister', methods=['GET', 'POST'])
+def studentregister():
+    form = StudentRegisForm()
+    if form.validate_on_submit():
+
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+
+        flash('Congratulations, you are now a registered student!')
+        return redirect(url_for('login.loginform'))
+    return render_template('/login/studentregister.html', title='Student Register', form=form)

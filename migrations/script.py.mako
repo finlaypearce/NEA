@@ -18,6 +18,9 @@ depends_on = ${repr(depends_on)}
 
 def upgrade():
     ${upgrades if upgrades else "pass"}
+    with op.batch_alter_table('user') as batch_op:
+        batch_op.drop_column('email_confirmed')
+
 
 
 def downgrade():

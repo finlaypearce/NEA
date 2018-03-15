@@ -10,9 +10,7 @@
     <body>
         <div>
             NEA:
-            {% if current_user.is_anonymous %}
-            <a href="{{ url_for('login.loginform') }}">Login</a>
-            {% else %}
+            {% if not current_user.is_anonymous %}
             <a href="{{ url_for('login.logout') }}">Logout</a>
             {% endif %}
         </div>
