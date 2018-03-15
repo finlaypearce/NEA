@@ -9,8 +9,13 @@
                 {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
                 {% if user.month_goal %}<p><b>This month's goal:</b> {{ user.month_goal }}</p>{% endif %}
                 {% if user.year_goal %}<p><b>This year's goal:</b> {{ user.year_goal }}</p>{% endif %}
+                <p>{{ user.followers.count() }} followers, {{ user.followed.count() }} following.</p>
                 {% if user == current_user %}
                 <p><a href="{{ url_for('profile.edit_profile') }}">Edit your profile</a></p>
+                {% elif not current_user.is_following(user) %}
+                <p><a href="{{ url_for('profile.follow', username=user.username) }}">Follow</a></p>
+                {% else %}
+                <p><a href="{{ url_for('profile.unfollow', username=user.username) }}">Unfollow</a></p>
                 {% endif %}
             </td>
         </tr>
