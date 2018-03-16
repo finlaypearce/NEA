@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
 from flask_admin import Admin
+from flask_socketio import SocketIO, emit
 
 
 app = Flask(__name__, instance_relative_config=True)
@@ -17,6 +18,7 @@ login_manager.init_app(app)
 login_manager.login_view = 'login.loginform'
 bootstrap = Bootstrap(app)
 admin = Admin(app)
+socketio = SocketIO(app)
 
 
 from .views.login import login

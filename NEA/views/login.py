@@ -11,10 +11,6 @@ login = Blueprint('login', __name__)
 
 @login.route('/', methods=['GET', 'POST'])
 def loginform():
-
-    #if current_user.is_authenticated:
-        #return redirect(url_for('student.student_dashboard'))
-
     form = LoginForm()
 
     if form.validate_on_submit():

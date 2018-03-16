@@ -1,4 +1,5 @@
-from NEA import app
+from NEA import app, socketio
 
 if __name__ == '__main__':
     app.run()
+    socketio.run(app)

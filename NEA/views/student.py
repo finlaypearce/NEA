@@ -3,9 +3,10 @@ from flask_login import login_required, current_user
 from .login import requires_roles
 from ..forms import PracticeForm
 from ..models import Practice, User, Level
-from NEA import db, app
+from NEA import db, app, socketio
 import math
 import datetime
+from flask_socketio import SocketIO, emit
 
 
 student = Blueprint('student', __name__)
@@ -63,3 +64,24 @@ def record_practice():
         flash('Practice entry successfully made!')
         return redirect(url_for('student.student_dashboard'))
     return render_template('student/record_practice.html', title='Record Practice', form=form)
+
+
+@student.route('/messages')
+def messages():
+    return render_template('student/messages.html')
+
+@socketio.on('my event', namespace='/test')
+def test_message(message):
+    emit('my response', {'data': message['data']})
+
+@socketio.on('my broadcast event', namespace='/test')
+def test_message(message):
+    emit('my response', {'data': message['data']}, broadcast=True)
+
+@socketio.on('connect', namespace='/test')
+def test_connect():
+    emit('my response', {'data': 'Connected'})
+
+@socketio.on('disconnect', namespace='/test')
+def test_disconnect():
+    print('Client disconnected')

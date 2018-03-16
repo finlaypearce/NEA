@@ -26,8 +26,8 @@
                     <li><a href="{{ url_for('teacher.student_management') }}">Student Management</a></li>
                     <li><a href="{# link to student management #}">Create Task</a></li>
                     <li><a href="{{ url_for('login.logout') }}">Logout</a></li>
-                    {# admin conditional #}
                     {% endif %}
+                    <li><a href="{{ url_for('student.messages') }}">Messages</a> </li>
                 </ul>
             </div>
         </div>

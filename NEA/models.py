@@ -12,13 +12,6 @@ followers = db.Table('followers',
                      )
 
 
-levels = [(1,0),(2,50),(3,150),(4,300),(5,500)]
-
-
-
-
-
-
 class Level(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     level = db.Column(db.Integer)
