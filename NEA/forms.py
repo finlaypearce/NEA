@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, DateField, IntegerField, SelectField
+from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length, NumberRange, InputRequired
 from NEA.models import User
 
 
@@ -41,4 +41,16 @@ class EditProfileForm(FlaskForm):
     about_me = TextAreaField('About me', validators=[Length(min=0, max=140)])
     month_goal = TextAreaField("This month's goal", validators=[Length(min=0, max=140)])
     year_goal = TextAreaField("This year's goal", validators=[Length(min=0, max=140)])
+    submit = SubmitField('Submit')
+
+
+class PracticeForm(FlaskForm):
+    body = TextAreaField('Description', validators=[Length(min=0, max=140)])
+    timestamp = DateField('Date/time', validators=[DataRequired()], format='%d-%m-%Y')
+    hours = IntegerField(validators=[InputRequired(), NumberRange(min=0, max=24)])
+    minutes = IntegerField(validators=[InputRequired(), NumberRange(min=0, max=60)])
+    instrument = SelectField('Instrument practiced',
+                             choices=[('piano', 'Piano'), ('guitar', 'Guitar'),
+                                      ('violin', 'Violin'), ('drums', 'Drums')],
+                             validators=[DataRequired()])
     submit = SubmitField('Submit')

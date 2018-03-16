@@ -3,6 +3,12 @@
 {% block content %}
     <h1>Hi, {{ current_user.username }}!</h1>
     {% for practice in practice %}
-    <div><p>{{ practice.author.username }} did: <b>{{ practice.body }}</b></p></div>
+    <div><p>{{ practice.author.username }} did: <b>{{ practice.duration }} of {{ practice.instrument }} practice on {{ practice.timestamp }}</b></p></div>
     {% endfor %}
+    {% if prev_url %}
+    <a href="{{ prev_url }}">Newer posts</a>
+    {% endif %}
+    {% if next_url %}
+    <a href="{{ next_url }}">Older posts</a>
+    {% endif %}
 {% endblock %}

@@ -11,6 +11,8 @@
         <div>
             NEA:
             {% if not current_user.is_anonymous %}
+            <a href="{{ url_for('student.student_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('student.record_practice') }}">Record Practice</a>
             <a href="{{ url_for('profile.user', username=current_user.username) }}">Profile</a>
             <a href="{{ url_for('login.logout') }}">Logout</a>
             {% endif %}

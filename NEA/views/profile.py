@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request
 from ..forms import EditProfileForm
 from flask_login import current_user, login_required
-from ..models import User
-from NEA import db
+from ..models import User, Practice
+from NEA import db, app
 
 
 profile = Blueprint('profile', __name__)
@@ -12,11 +12,13 @@ profile = Blueprint('profile', __name__)
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    practice = [
-        {'author': user, 'body': 'Test entry #1'},
-        {'author': user, 'body': 'Test entry #2'}
-    ]
-    return render_template('profile/user.html', user=user, practice=practice)
+    practice = user.practice.order_by(Practice.timestamp.desc()).paginate(
+        page, app.config['POSTS_PER_PAGE'], False)
+    next_url = url_for('profile.user', username=user.username, page=practice.next_num) \
+        if practice.has_next else None
+    prev_url = url_for('profile.user', username=user.username, page=practice.prev_num) \
+        if practice.has_prev else None
+    render_template('profile/user.html', user=user, practice=practice)
 
 
 @profile.route('/edit_profile', methods=['GET', 'POST'])
