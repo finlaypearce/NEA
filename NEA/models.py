@@ -12,6 +12,20 @@ followers = db.Table('followers',
                      )
 
 
+levels = [(1,0),(2,50),(3,150),(4,300),(5,500)]
+
+
+
+
+
+
+class Level(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    level = db.Column(db.Integer)
+    exp_required = db.Column(db.Integer)
+    user = db.relationship('User', backref='Level', lazy='dynamic')
+
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -22,6 +36,9 @@ class User(UserMixin, db.Model):
     month_goal = db.Column(db.String(140))
     year_goal = db.Column(db.String(140))
     teacher_code = db.Column(db.Integer, unique=True)
+    student_exp = db.Column(db.Integer)
+    streak = db.Column(db.Integer)
+    level_id = db.Column(db.Integer, db.ForeignKey('level.id'))
     practice = db.relationship('Practice', backref='author', lazy='dynamic')
     followed = db.relationship(
         'User', secondary=followers,
@@ -29,6 +46,7 @@ class User(UserMixin, db.Model):
         secondaryjoin=(followers.c.followed_id == id),
         backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
 
+    # print debug function
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
@@ -79,6 +97,14 @@ class User(UserMixin, db.Model):
             followers.c.followed_id == self.id)
         return followed.order_by(Practice.timestamp.desc())
 
+    def get_streak(self):
+        s = self.streak
+        return s
+
+    def get_exp(self):
+        exp = self.student_exp
+        return exp
+
 
 class Practice(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -88,6 +114,7 @@ class Practice(db.Model):
     instrument = db.Column(db.String(32))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    # print debug function
     def __repr__(self):
         return '<Practice {}>'.format(self.body)
 
@@ -95,3 +122,5 @@ class Practice(db.Model):
 # admin views
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Practice, db.session))
+admin.add_view(ModelView(Level, db.session))
+

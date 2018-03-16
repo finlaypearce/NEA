@@ -2,8 +2,10 @@ from flask import Blueprint, render_template, url_for, redirect, flash, request
 from flask_login import login_required, current_user
 from .login import requires_roles
 from ..forms import PracticeForm
-from ..models import Practice
+from ..models import Practice, User, Level
 from NEA import db, app
+import math
+import datetime
 
 
 student = Blueprint('student', __name__)
@@ -44,6 +46,18 @@ def record_practice():
     if form.validate_on_submit():
         time = form.hours.data*3600 + form.minutes.data*60
         entry = Practice(body=form.body.data, author=current_user, duration=time, instrument=form.instrument.data)
+
+        s = current_user.get_streak()
+        current_exp = current_user.get_exp()
+
+        add_exp = math.floor((time*((s/100)+2)**((s/100)+1))/100)
+        update_exp = current_exp + add_exp
+        current_user.student_exp = update_exp
+
+        latest_entry = Practice.query.filter_by(username=current_user.username)
+        if datetime.datetime.now() - latest_entry.timestamp < 24:
+            current_user.streak = current_user.streak + 1
+
         db.session.add(entry)
         db.session.commit()
         flash('Practice entry successfully made!')
