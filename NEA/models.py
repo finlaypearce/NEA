@@ -1,8 +1,9 @@
-from NEA import db
+from NEA import db, app, admin
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from datetime import datetime
 from hashlib import md5
+from flask_admin.contrib.sqla import ModelView
 
 
 followers = db.Table('followers',
@@ -89,3 +90,8 @@ class Practice(db.Model):
 
     def __repr__(self):
         return '<Practice {}>'.format(self.body)
+
+
+# admin views
+admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(Practice, db.session))
