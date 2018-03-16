@@ -12,6 +12,7 @@
                 <p>{{ user.followers.count() }} followers, {{ user.followed.count() }} following.</p>
                 {% if user == current_user %}
                 <p><a href="{{ url_for('profile.edit_profile') }}">Edit your profile</a></p>
+                <p><a href="{{ url_for('profile.set_teacher_code') }}">Enter teacher code</a></p>
                 {% elif not current_user.is_following(user) %}
                 <p><a href="{{ url_for('profile.follow', username=user.username) }}">Follow</a></p>
                 {% else %}

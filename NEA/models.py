@@ -20,6 +20,7 @@ class User(UserMixin, db.Model):
     about_me = db.Column(db.String(140))
     month_goal = db.Column(db.String(140))
     year_goal = db.Column(db.String(140))
+    teacher_code = db.Column(db.Integer, unique=True)
     practice = db.relationship('Practice', backref='author', lazy='dynamic')
     followed = db.relationship(
         'User', secondary=followers,
@@ -58,6 +59,24 @@ class User(UserMixin, db.Model):
             followers.c.follower_id == self.id)
         own = Practice.query.filter_by(user_id=self.id)
         return followed.union(own).order_by(Practice.timestamp.desc())
+
+    def is_student(self):
+        return self.access == 1
+
+    def is_teacher(self):
+        return self.access == 2
+
+    def followed_students(self):
+        students = User.query.join(followers, (followers.c.follower_id == User.id))\
+            .filter(followers.c.followed_id == self.id)\
+            .order_by(User.username.desc())
+        return students
+
+    def followed_s_entries(self):
+        followed = Practice.query.join(
+            followers, (followers.c.follower_id == Practice.user_id)).filter(
+            followers.c.followed_id == self.id)
+        return followed.order_by(Practice.timestamp.desc())
 
 
 class Practice(db.Model):

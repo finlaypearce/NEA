@@ -17,7 +17,6 @@ class StudentRegisForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
-    teacher_code = StringField('Teacher Code')
     submit = SubmitField('Register')
 
     def validate_username(self, username):
@@ -37,10 +36,11 @@ class TeacherRegisForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
-    instrument = SelectField('Instrument practiced',
+    instrument = SelectField('Instrument taught',
                              choices=[('piano', 'Piano'), ('guitar', 'Guitar'),
                                       ('violin', 'Violin'), ('drums', 'Drums')],
                              validators=[DataRequired()])
+    teacher_code = IntegerField('Set teacher code', validators=[DataRequired()])
     submit = SubmitField('Register')
 
 
@@ -61,4 +61,9 @@ class PracticeForm(FlaskForm):
                              choices=[('piano', 'Piano'), ('guitar', 'Guitar'),
                                       ('violin', 'Violin'), ('drums', 'Drums')],
                              validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+
+class TeacherCodeForm(FlaskForm):
+    teacher_code = IntegerField('Input teacher code', validators=[DataRequired()])
     submit = SubmitField('Submit')

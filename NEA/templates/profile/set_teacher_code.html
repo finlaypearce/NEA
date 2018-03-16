@@ -2,13 +2,10 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-    <h1>Teacher Register</h1>
+    <h1>Set Teacher Code</h1>
     <div class="row">
         <div class="col-md-4">
             {{ wtf.quick_form(form) }}
         </div>
-    </div>
-    <div>
-        <a href="{{ url_for('login.studentregister') }}">Student? Click here to sign up.</a>
     </div>
 {% endblock %}

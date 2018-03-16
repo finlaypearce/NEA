@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>Student Management</h1>
+    {% for students in students %}
+        <table class="table table-hover">
+        <tr>
+            <td width="70px">
+                <a href="{{ url_for('profile.user', username=students.username) }}">
+                    <img src="{{ students.avatar(70) }}" />
+                </a>
+            </td>
+            <td>
+                <a href="{{ url_for('profile.user', username=students.username) }}">
+                    {{ students.username }}
+                </a>
+            </td>
+        </tr>
+        </table>
+    {% endfor %}
+{% endblock  %}

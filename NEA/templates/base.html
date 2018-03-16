@@ -18,10 +18,15 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    {% if not current_user.is_anonymous %}
+                    {% if not current_user.is_anonymous and current_user.is_student() %}
                     <li><a href="{{ url_for('student.record_practice') }}">Record Practice</a></li>
                     <li><a href="{{ url_for('profile.user', username=current_user.username) }}">Profile</a></li>
                     <li><a href="{{ url_for('login.logout') }}">Logout</a></li>
+                    {% elif not current_user.is_anonymous and current_user.is_teacher %}
+                    <li><a href="{{ url_for('teacher.student_management') }}">Student Management</a></li>
+                    <li><a href="{# link to student management #}">Create Task</a></li>
+                    <li><a href="{{ url_for('login.logout') }}">Logout</a></li>
+                    {# admin conditional #}
                     {% endif %}
                 </ul>
             </div>

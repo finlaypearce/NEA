@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request
-from ..forms import EditProfileForm
+from ..forms import EditProfileForm, TeacherCodeForm
 from flask_login import current_user, login_required
+from .login import requires_roles
 from ..models import User, Practice
 from NEA import db, app
 
@@ -49,7 +50,7 @@ def follow(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
         flash('User {} not found.'.format(username))
-        return redirect(url_for('index'))
+        return redirect(url_for('student.student_dashboard'))
     if user == current_user:
         flash('You cannot follow yourself!')
         return redirect(url_for('profile.user', username=username))
@@ -65,7 +66,7 @@ def unfollow(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
         flash('User {} not found.'.format(username))
-        return redirect(url_for('index'))
+        return redirect(url_for('student.student_dashboard'))
     if user == current_user:
         flash('You cannot unfollow yourself!')
         return redirect(url_for('profile.user', username=username))
@@ -73,3 +74,15 @@ def unfollow(username):
     db.session.commit()
     flash('You are not following {}.'.format(username))
     return redirect(url_for('profile.user', username=username))
+
+
+@profile.route('/set_teacher_code', methods=['GET', 'POST'])
+@login_required
+@requires_roles(1)
+def set_teacher_code():
+    form = TeacherCodeForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(teacher_code=form.teacher_code.data).first()
+        username = user.username
+        return redirect(url_for('profile.follow', username=username))
+    return render_template('profile/set_teacher_code.html', title='Set Teacher Code', form=form)

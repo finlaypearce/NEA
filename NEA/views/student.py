@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, url_for, redirect, flash, request
 from flask_login import login_required, current_user
+from .login import requires_roles
 from ..forms import PracticeForm
 from ..models import Practice
 from NEA import db, app
@@ -12,19 +13,32 @@ student = Blueprint('student', __name__)
 @login_required
 def student_dashboard():
     page = request.args.get('page', 1, type=int)
-    entries = current_user.followed_entries().paginate(
-        page, app.config['POSTS_PER_PAGE'], False)
-    next_url = url_for('student.student_dashboard', page=entries.next_num) \
-        if entries.has_next else None
-    prev_url = url_for('student.student_dashboard', page=entries.prev_num) \
-        if entries.has_prev else None
-    practice = current_user.followed_entries().all()
-    return render_template('student/s_dashboard.html', title='Student Dashboard',
+    if current_user.access == 1:
+        entries = current_user.followed_entries().paginate(
+            page, app.config['POSTS_PER_PAGE'], False)
+        next_url = url_for('student.student_dashboard', page=entries.next_num) \
+            if entries.has_next else None
+        prev_url = url_for('student.student_dashboard', page=entries.prev_num) \
+            if entries.has_prev else None
+        practice = current_user.followed_entries().all()
+        return render_template('student/s_dashboard.html', title='Student Dashboard',
+                           practice=practice, entries=entries.items)
+
+    elif current_user.access == 2:
+        entries = current_user.followed_s_entries().paginate(
+            page, app.config['POSTS_PER_PAGE'], False)
+        next_url = url_for('student.student_dashboard', page=entries.next_num) \
+            if entries.has_next else None
+        prev_url = url_for('student.student_dashboard', page=entries.prev_num) \
+            if entries.has_prev else None
+        practice = current_user.followed_s_entries().all()
+        return render_template('student/s_dashboard.html', title='Student Dashboard',
                            practice=practice, entries=entries.items)
 
 
 @student.route('/record_practice', methods=['GET', 'POST'])
 @login_required
+@requires_roles(1)
 def record_practice():
     form = PracticeForm()
     if form.validate_on_submit():
