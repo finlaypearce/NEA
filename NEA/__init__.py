@@ -3,6 +3,7 @@ from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_bootstrap import Bootstrap
 
 
 app = Flask(__name__, instance_relative_config=True)
@@ -13,6 +14,7 @@ migrate = Migrate(app, db)
 login_manager = LoginManager(app)
 login_manager.init_app(app)
 login_manager.login_view = 'login.loginform'
+bootstrap = Bootstrap(app)
 
 from .views.login import login
 from .views.student import student

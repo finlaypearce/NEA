@@ -31,9 +31,17 @@ class StudentRegisForm(FlaskForm):
             raise ValidationError('Please use a different email address.')
 
 
-class ResetPasswordRequestForm(FlaskForm):
+class TeacherRegisForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    submit = SubmitField('Request Password Reset')
+    password = PasswordField('Password', validators=[DataRequired()])
+    password2 = PasswordField(
+        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    instrument = SelectField('Instrument practiced',
+                             choices=[('piano', 'Piano'), ('guitar', 'Guitar'),
+                                      ('violin', 'Violin'), ('drums', 'Drums')],
+                             validators=[DataRequired()])
+    submit = SubmitField('Register')
 
 
 class EditProfileForm(FlaskForm):

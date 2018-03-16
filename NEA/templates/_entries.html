@@ -1,0 +1,17 @@
+    <table class="table table-hover">
+        <tr>
+            <td width="70px">
+                <a href="{{ url_for('profile.user', username=practice.author.username) }}">
+                    <img src="{{ practice.author.avatar(70) }}" />
+                </a>
+            </td>
+            <td>
+                <a href="{{ url_for('profile.user', username=practice.author.username) }}">
+                    {{ practice.author.username }}
+                </a>
+                did:
+                <br>
+                {{ practice.duration }} of {{ practice.instrument }} practice on {{ practice.timestamp }}
+            </td>
+        </tr>
+    </table>

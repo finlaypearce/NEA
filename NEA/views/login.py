@@ -38,7 +38,7 @@ def studentregister():
     form = StudentRegisForm()
     if form.validate_on_submit():
 
-        user = User(username=form.username.data, email=form.email.data)
+        user = User(username=form.username.data, email=form.email.data, access=1)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -46,3 +46,8 @@ def studentregister():
         flash('Congratulations, you are now a registered student!')
         return redirect(url_for('login.loginform'))
     return render_template('login/studentregister.html', title='Student Register', form=form)
+
+
+@login.route('/teacherregister', methods=['GET', 'POST'])
+def teacherregister():
+    form
